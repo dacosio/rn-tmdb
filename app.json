@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "tmdb",
+    "slug": "tmdb",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/splashScreen.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splashScreen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#032541"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#032541"
+      }
+    }
+  }
+}
