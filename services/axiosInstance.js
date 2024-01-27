@@ -54,3 +54,13 @@ export const getDetail = async (id) => {
     throw error;
   }
 };
+
+export const getPerson = async (personId) => {
+  try {
+    const response = await tmdbApi.get(`person/${personId}?api_key=${key}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${category} person:`, error);
+    throw error;
+  }
+};

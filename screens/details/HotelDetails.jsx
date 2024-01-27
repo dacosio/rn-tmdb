@@ -10,7 +10,12 @@ import reusable from "../../components/Reusable/reusable.style";
 import { Rating } from "react-native-stock-star-rating";
 import DescriptionText from "../../components/Reusable/DescriptionText";
 import { useRoute } from "@react-navigation/native";
-import { getDetail, getMovies, getTvShows } from "../../services/axiosInstance";
+import {
+  getDetail,
+  getMovies,
+  getTvShows,
+  getPerson,
+} from "../../services/axiosInstance";
 
 const HotelDetails = ({ navigation }) => {
   const hotel = {
@@ -74,10 +79,15 @@ const HotelDetails = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (mediaType === "tv") {
+        if (mediaType == "tv") {
           const data = await getTvShows(id);
+
+          console.log(data?.original_name);
           setDetailData(data);
         } else if (mediaType == "movie") {
+          const data = await getMovies(id);
+          setDetailData(data);
+        } else if (mediaType == "person") {
           const data = await getMovies(id);
           setDetailData(data);
         }
@@ -92,9 +102,25 @@ const HotelDetails = ({ navigation }) => {
     }
   }, [id]);
 
-  // console.log(detailData)
   // console.log(detailData);
-  // console.log(id, mediaType);
+
+  const title = (mediaType) => {
+    let titleLabel = "";
+    console.log(mediaType);
+    switch (mediaType) {
+      case "tv":
+        titleLabel = detailData?.original_title;
+      case "movie":
+        titleLabel = detailData?.original_name;
+      case "person":
+        titleLabel = detailData?.name;
+    }
+
+    console.log("titlelabel", titleLabel);
+    return titleLabel;
+  };
+  // const test = title(mediaType);
+  // console.log(test);
   return (
     <ScrollView>
       <View style={{ height: 80 }}>
@@ -102,7 +128,7 @@ const HotelDetails = ({ navigation }) => {
           top={50}
           left={20}
           right={20}
-          title={detailData?.original_title}
+          title={title(mediaType)}
           bgColor={COLORS.white}
           onPress={() => navigation.goBack()}
           onPressOne={() => {}}
@@ -127,14 +153,18 @@ const HotelDetails = ({ navigation }) => {
           <View style={styles.titleContainer}>
             <View style={styles.titleColumn}>
               <ReusableText
-                text={detailData?.original_title}
+                text={
+                  detailData?.original_title
+                    ? detailData?.original_title
+                    : detailData?.original_name
+                }
                 family={"medium"}
                 size={SIZES.large}
                 color={COLORS.black}
               />
               <HeightSpacer height={10} />
               <ReusableText
-                text={detailData?.tagline ? detailData?.tagline : 'no tagline'}
+                text={detailData?.tagline ? detailData?.tagline : "no tagline"}
                 family={"medium"}
                 size={SIZES.medium}
                 color={COLORS.black}
