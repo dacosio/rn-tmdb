@@ -10,7 +10,7 @@ const tmdbApi = axios.create({
   },
 });
 
-export const getMoviesByCategory = async (category) => {
+export const getMovies = async (category) => {
   try {
     const response = await tmdbApi.get(`movie/${category}?api_key=${key}`);
     return response.data;

@@ -10,7 +10,7 @@ import reusable from "../../components/Reusable/reusable.style";
 import { Rating } from "react-native-stock-star-rating";
 import DescriptionText from "../../components/Reusable/DescriptionText";
 import { useRoute } from "@react-navigation/native";
-import { getDetail } from "../../services/axiosInstance";
+import { getDetail, getMovies, getTvShows } from "../../services/axiosInstance";
 
 const HotelDetails = ({ navigation }) => {
   const hotel = {
@@ -71,24 +71,30 @@ const HotelDetails = ({ navigation }) => {
   const route = useRoute();
   const { id, mediaType } = route.params;
   const [detailData, setDetailData] = useState(null);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await getDetail(id);
-  //       setDetailData(data);
-  //     } catch (error) {
-  //       // Handle error if needed
-  //       console.error("Error fetching details:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (mediaType === "tv") {
+          const data = await getTvShows(id);
+          setDetailData(data);
+        } else if (mediaType == "movie") {
+          const data = await getMovies(id);
+          setDetailData(data);
+        }
+      } catch (error) {
+        // Handle error if needed
+        console.error("Error fetching details:", error);
+      }
+    };
 
-  //   if (id) {
-  //     fetchData();
-  //   }
-  // }, [id]);
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
 
   // console.log(detailData)
-  console.log(id, mediaType);
+  // console.log(detailData);
+  // console.log(id, mediaType);
   return (
     <ScrollView>
       <View style={{ height: 80 }}>
@@ -96,7 +102,7 @@ const HotelDetails = ({ navigation }) => {
           top={50}
           left={20}
           right={20}
-          title={hotel.title}
+          title={detailData?.original_title}
           bgColor={COLORS.white}
           onPress={() => navigation.goBack()}
           onPressOne={() => {}}
@@ -105,37 +111,38 @@ const HotelDetails = ({ navigation }) => {
       <View>
         <View style={styles.container}>
           <NetworkImage
-            source={hotel.imageUrl}
+            source={
+              "https://image.tmdb.org/t/p/original" +
+              `${
+                detailData?.poster_path
+                  ? detailData?.poster_path
+                  : detailData?.profile_path
+              }`
+            }
             width={"100%"}
             height={220}
             borderRadius={25}
           />
+
           <View style={styles.titleContainer}>
             <View style={styles.titleColumn}>
               <ReusableText
-                text={hotel.title}
+                text={detailData?.original_title}
                 family={"medium"}
                 size={SIZES.large}
                 color={COLORS.black}
               />
               <HeightSpacer height={10} />
               <ReusableText
-                text={hotel.location}
+                text={detailData?.tagline ? detailData?.tagline : 'no tagline'}
                 family={"medium"}
                 size={SIZES.medium}
                 color={COLORS.black}
               />
               <HeightSpacer height={15} />
               <View style={reusable.rowWithSpace("space-between")}>
-                <Rating
-                  maxStars={5}
-                  stars={hotel.rating}
-                  bordered={false}
-                  color={"#FD9942"}
-                />
-
                 <ReusableText
-                  text={`(${hotel.review})`}
+                  text={`Vote Average: ${detailData?.vote_average}`}
                   family={"medium"}
                   size={SIZES.medium}
                   color={COLORS.gray}
@@ -152,8 +159,7 @@ const HotelDetails = ({ navigation }) => {
             color={COLORS.black}
           />
           <HeightSpacer height={10} />
-          <DescriptionText text={hotel.description} />
-          <HeightSpacer height={10} />
+          <DescriptionText text={detailData?.overview} />
         </View>
       </View>
     </ScrollView>

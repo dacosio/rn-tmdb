@@ -3,7 +3,7 @@ import React from "react";
 import ReusableTile from "../../components/Reusable/ReusableTile";
 import { SIZES, COLORS } from "../../constants/theme";
 import { useEffect, useState } from "react";
-import { getMoviesByCategory } from "../../services/axiosInstance";
+import { getMovies } from "../../services/axiosInstance";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import DropdownComponent from "../../components/Reusable/Dropdown";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,7 +22,7 @@ const Movies = ({ navigation }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const movies = await getMoviesByCategory(category.value);
+        const movies = await getMovies(category.value);
         setMovies(movies.results);
       } catch (error) {
         console.error("Error fetching  movies:", error);

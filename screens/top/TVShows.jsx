@@ -4,9 +4,7 @@ import ReusableTile from "../../components/Reusable/ReusableTile";
 import { SIZES, COLORS } from "../../constants/theme";
 import { useEffect, useState } from "react";
 import { getTvShows } from "../../services/axiosInstance";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import DropdownComponent from "../../components/Reusable/Dropdown";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const TVShows = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
