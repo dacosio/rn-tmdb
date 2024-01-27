@@ -6,6 +6,7 @@ import { useState } from "react";
 import { getMoviesBySearch } from "../../services/axiosInstance";
 import DropdownComponent from "../../components/Reusable/Dropdown";
 import ReusableBtn from "../../components/Buttons/ReusableBtn";
+import ReusableText from "../../components/Reusable/ReusableText";
 
 const SearchResults = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -54,7 +55,7 @@ const SearchResults = ({ navigation }) => {
         value={movieType}
         setValue={setMovieType}
       />
-      <View style={{marginVertical: 10}}>
+      <View style={{ marginVertical: 10 }}>
         <ReusableBtn
           onPress={handleSearch}
           btnText={"SEARCH"}
@@ -66,9 +67,18 @@ const SearchResults = ({ navigation }) => {
         />
       </View>
       {movies.length === 0 ? (
-        <View>
-          <Text>Please search</Text>
-        </View>
+        <ReusableText
+          text={"Please Search for a Movie"}
+          family={"medium"}
+          size={SIZES.large}
+          color={COLORS.lightRed}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            paddingTop: 100,
+          }}
+        />
       ) : (
         <FlatList
           data={movies}
@@ -80,7 +90,12 @@ const SearchResults = ({ navigation }) => {
               style={{ marginBottom: 10, backgroundColor: COLORS.lightWhite }}>
               <ReusableTile
                 item={item}
-                // onPress={() => navigation.navigate("HotelDetails", item._id)}
+                onPress={() =>
+                  navigation.navigate("HotelDetails", {
+                    id: item.id,
+                    mediaType: item.media_type ? item.media_type : "movie",
+                  })
+                }
               />
             </View>
           )}

@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "../../components/Reusable/AppBar";
 import { COLORS, SIZES, TEXT } from "../../constants/theme";
 import NetworkImage from "../../components/Reusable/NetworkImage";
@@ -9,10 +9,8 @@ import HeightSpacer from "../../components/Reusable/HeightSpacer";
 import reusable from "../../components/Reusable/reusable.style";
 import { Rating } from "react-native-stock-star-rating";
 import DescriptionText from "../../components/Reusable/DescriptionText";
-import HotelMap from "../../components/Hotel/HotelMap";
-import { Feather } from "@expo/vector-icons";
-import ReviewsList from "../../components/Hotel/ReviewsList";
-import ReusableBtn from "../../components/Buttons/ReusableBtn";
+import { useRoute } from "@react-navigation/native";
+import { getDetail } from "../../services/axiosInstance";
 
 const HotelDetails = ({ navigation }) => {
   const hotel = {
@@ -70,15 +68,27 @@ const HotelDetails = ({ navigation }) => {
     __v: 0,
   };
 
-  let coordinates = {
-    id: hotel._id,
-    title: hotel.title,
-    latitude: hotel.latitude,
-    longitude: hotel.longitude,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  };
+  const route = useRoute();
+  const { id, mediaType } = route.params;
+  const [detailData, setDetailData] = useState(null);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await getDetail(id);
+  //       setDetailData(data);
+  //     } catch (error) {
+  //       // Handle error if needed
+  //       console.error("Error fetching details:", error);
+  //     }
+  //   };
 
+  //   if (id) {
+  //     fetchData();
+  //   }
+  // }, [id]);
+
+  // console.log(detailData)
+  console.log(id, mediaType);
   return (
     <ScrollView>
       <View style={{ height: 80 }}>
@@ -88,8 +98,6 @@ const HotelDetails = ({ navigation }) => {
           right={20}
           title={hotel.title}
           bgColor={COLORS.white}
-          bgColorOne={COLORS.white}
-          icon={"search1"}
           onPress={() => navigation.goBack()}
           onPressOne={() => {}}
         />
@@ -146,61 +154,6 @@ const HotelDetails = ({ navigation }) => {
           <HeightSpacer height={10} />
           <DescriptionText text={hotel.description} />
           <HeightSpacer height={10} />
-          <ReusableText
-            text={"Location"}
-            family={"medium"}
-            size={SIZES.large}
-            color={COLORS.black}
-          />
-          <HeightSpacer height={15} />
-          <ReusableText
-            text={hotel.location}
-            family={"medium"}
-            size={SIZES.small + 2}
-            color={COLORS.gray}
-          />
-          <HotelMap coordinates={coordinates} />
-          <View style={reusable.rowWithSpace("space-between")}>
-            <ReusableText
-              text={"Reviews"}
-              family={"medium"}
-              size={SIZES.large}
-              color={COLORS.black}
-            />
-            <TouchableOpacity>
-              <Feather name="list" size={20} />
-            </TouchableOpacity>
-          </View>
-
-          <HeightSpacer height={10} />
-
-          <ReviewsList reviews={hotel.reviews} />
-        </View>
-        <View style={[reusable.rowWithSpace("space-between"), styles.bottom]}>
-          <View>
-            <ReusableText
-              text={`\$ ${hotel.price}`}
-              family={"medium"}
-              size={SIZES.large}
-              color={COLORS.black}
-            />
-            <HeightSpacer height={5} />
-            <ReusableText
-              text={"Jan 01 - Dec 25"}
-              family={"medium"}
-              size={SIZES.medium}
-              color={COLORS.green}
-            />
-          </View>
-          <ReusableBtn
-            onPress={() => navigation.navigate("SelectRoom")}
-            btnText={"Select Room"}
-            width={(SIZES.width - 50) / 2.2}
-            bgColor={COLORS.green}
-            borderColor={COLORS.green}
-            borderWidth={0}
-            textColor={COLORS.white}
-          />
         </View>
       </View>
     </ScrollView>

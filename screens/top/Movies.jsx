@@ -50,7 +50,12 @@ const Movies = ({ navigation }) => {
             style={{ marginBottom: 10, backgroundColor: COLORS.lightWhite }}>
             <ReusableTile
               item={item}
-              // onPress={() => navigation.navigate("HotelDetails", item._id)}
+              onPress={() =>
+                navigation.navigate("HotelDetails", {
+                  id: item.id,
+                  mediaType: item.media_type ? item.media_type : "movie",
+                })
+              }
             />
           </View>
         )}

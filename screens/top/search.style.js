@@ -40,6 +40,12 @@ const styles = StyleSheet.create({
   tile: {
     marginBottom: 10,
   },
+
+  noResult: {
+    paddingTop: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default styles;

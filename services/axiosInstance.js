@@ -34,3 +34,23 @@ export const getMoviesBySearch = async (movieType, qs) => {
     throw error;
   }
 };
+
+export const getTvShows = async (category) => {
+  try {
+    const response = await tmdbApi.get(`tv/${category}?api_key=${key}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${category} movies:`, error);
+    throw error;
+  }
+};
+
+export const getDetail = async (id) => {
+  try {
+    const response = await tmdbApi.get(`list/${id}?api_key=${key}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${category} movies:`, error);
+    throw error;
+  }
+};

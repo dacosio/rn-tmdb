@@ -14,7 +14,7 @@ const ReusableTile = ({ item, onPress }) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={reusable.rowWithSpace("flex-start")}>
         <NetworkImage
-          source={"https://image.tmdb.org/t/p/original" + item.poster_path}
+          source={"https://image.tmdb.org/t/p/original" + `${item.poster_path ? item.poster_path : item.profile_path}`}
           width={80}
           height={80}
           borderRadius={12}
@@ -22,7 +22,7 @@ const ReusableTile = ({ item, onPress }) => {
         <WidthSpacer width={15} />
         <View>
           <ReusableText
-            text={item.title}
+            text={item.title ? item.title : item.original_name}
             family={"medium"}
             size={SIZES.medium}
             color={COLORS.black}
@@ -41,7 +41,7 @@ const ReusableTile = ({ item, onPress }) => {
               color={COLORS.dark}
             />
             <ReusableText
-              text={item.release_date}
+              text={item.release_date ? item.release_date : "No release date"}
               family={"medium"}
               size={14}
               color={COLORS.gray}
