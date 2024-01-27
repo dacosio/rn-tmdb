@@ -1,2 +1,1 @@
-# travel-app
 # rn-tmdb
