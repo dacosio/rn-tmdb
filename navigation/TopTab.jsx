@@ -40,8 +40,8 @@ const TopTab = ({ navigation }) => {
 
         <Tab.Navigator style={{ position: "relative" }}>
           <Tab.Screen name="Movies" component={Movies} />
-          <Tab.Screen name="Search" component={TVShows} />
-          <Tab.Screen name="TV Shows" component={SearchResults} />
+          <Tab.Screen name="Search" component={SearchResults} />
+          <Tab.Screen name="TV Shows" component={TVShows} />
         </Tab.Navigator>
       </SafeAreaView>
     </View>

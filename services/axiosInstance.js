@@ -19,3 +19,18 @@ export const getMoviesByCategory = async (category) => {
     throw error;
   }
 };
+
+export const getMoviesBySearch = async (movieType, qs) => {
+  try {
+    const response = await tmdbApi.get(`search/${movieType}`, {
+      params: {
+        api_key: key,
+        query: qs,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${movie} movies:`, error);
+    throw error;
+  }
+};
