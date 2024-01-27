@@ -26,6 +26,9 @@ const ReusableTile = ({ item, onPress }) => {
             family={"medium"}
             size={SIZES.medium}
             color={COLORS.black}
+            style={{
+              width: SIZES.width - 160,
+            }}
           />
           <HeightSpacer height={8} />
 
@@ -43,7 +46,6 @@ const ReusableTile = ({ item, onPress }) => {
               size={14}
               color={COLORS.gray}
             />
-           
           </View>
 
           <HeightSpacer height={8} />
@@ -62,7 +64,6 @@ const ReusableTile = ({ item, onPress }) => {
               size={14}
               color={COLORS.gray}
             />
-           
           </View>
         </View>
       </View>

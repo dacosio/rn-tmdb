@@ -13,7 +13,7 @@ const ReusableText = ({
 }) => {
   const dynamicStyles = styles.textStyle(family, size, color, align, bgColor);
   return (
-    <Text style={[dynamicStyles, style]} {...props}>
+    <Text style={[dynamicStyles, style]}  {...props}>
       {text}
     </Text>
   );
