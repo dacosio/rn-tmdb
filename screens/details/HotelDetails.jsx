@@ -10,12 +10,7 @@ import reusable from "../../components/Reusable/reusable.style";
 import { Rating } from "react-native-stock-star-rating";
 import DescriptionText from "../../components/Reusable/DescriptionText";
 import { useRoute } from "@react-navigation/native";
-import {
-  getDetail,
-  getMovies,
-  getTvShows,
-  getPerson,
-} from "../../services/axiosInstance";
+import { getDetail, getMovies, getTvShows } from "../../services/axiosInstance";
 
 const HotelDetails = ({ navigation }) => {
   const hotel = {
@@ -82,7 +77,6 @@ const HotelDetails = ({ navigation }) => {
         if (mediaType == "tv") {
           const data = await getTvShows(id);
 
-          console.log(data?.original_name);
           setDetailData(data);
         } else if (mediaType == "movie") {
           const data = await getMovies(id);
@@ -102,25 +96,17 @@ const HotelDetails = ({ navigation }) => {
     }
   }, [id]);
 
-  // console.log(detailData);
-
   const title = (mediaType) => {
     let titleLabel = "";
-    console.log(mediaType);
     switch (mediaType) {
       case "tv":
         titleLabel = detailData?.original_title;
       case "movie":
         titleLabel = detailData?.original_name;
-      case "person":
-        titleLabel = detailData?.name;
     }
 
-    console.log("titlelabel", titleLabel);
     return titleLabel;
   };
-  // const test = title(mediaType);
-  // console.log(test);
   return (
     <ScrollView>
       <View style={{ height: 80 }}>

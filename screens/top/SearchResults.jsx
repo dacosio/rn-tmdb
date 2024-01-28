@@ -28,8 +28,6 @@ const SearchResults = ({ navigation }) => {
     }
   };
 
-  const [searchValue, setsearchValue] = useState("");
-
   const handleSearch = () => {
     fetchMoviesBySearching();
   };
@@ -81,7 +79,7 @@ const SearchResults = ({ navigation }) => {
         />
       ) : (
         <FlatList
-          data={movies}
+          data={movies.filter((movie) => movie.media_type !== "person")}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ columnGap: SIZES.medium }}
           showsHorizontalScrollIndicator={false}

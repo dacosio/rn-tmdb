@@ -8,13 +8,17 @@ import WidthSpacer from "../Reusable/WidthSpacer";
 import ReusableText from "./ReusableText";
 import HeightSpacer from "./HeightSpacer";
 import Rating from "./Rating";
+import ReusableBtn from "../Buttons/ReusableBtn";
 
 const ReusableTile = ({ item, onPress }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container}>
       <View style={reusable.rowWithSpace("flex-start")}>
         <NetworkImage
-          source={"https://image.tmdb.org/t/p/original" + `${item.poster_path ? item.poster_path : item.profile_path}`}
+          source={
+            "https://image.tmdb.org/t/p/original" +
+            `${item.poster_path ? item.poster_path : item.profile_path}`
+          }
           width={80}
           height={80}
           borderRadius={12}
@@ -63,6 +67,17 @@ const ReusableTile = ({ item, onPress }) => {
               family={"medium"}
               size={14}
               color={COLORS.gray}
+            />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <ReusableBtn
+              onPress={onPress}
+              btnText={"More Details"}
+              width={200}
+              bgColor={COLORS.green}
+              borderColor={COLORS.green}
+              borderWidth={0}
+              textColor={COLORS.white}
             />
           </View>
         </View>
