@@ -1,15 +1,24 @@
-import { View, Text, FlatList, TextInput } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
 import ReusableTile from "../../components/Reusable/ReusableTile";
 import { SIZES, COLORS } from "../../constants/theme";
-import { useState } from "react";
 import { getMoviesBySearch } from "../../services/axiosInstance";
 import DropdownComponent from "../../components/Reusable/Dropdown";
 import ReusableBtn from "../../components/Buttons/ReusableBtn";
 import ReusableText from "../../components/Reusable/ReusableText";
+import styles from "./search.style";
 
 const SearchResults = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const itemsPerPage = 10;
 
   const options = [
     { label: "Movie", value: "movie" },
@@ -21,28 +30,74 @@ const SearchResults = ({ navigation }) => {
 
   const fetchMoviesBySearching = async () => {
     try {
-      const movies = await getMoviesBySearch(movieType.value, searchKey);
-      setMovies(movies.results);
+      setLoading(true);
+      const response = await getMoviesBySearch(
+        movieType.value,
+        searchKey,
+        page
+      );
+      setMovies((prevMovies) => [
+        ...(page === 1 ? [] : prevMovies),
+        ...response.results.filter((movie) => movie.media_type !== "person"),
+      ]);
     } catch (error) {
-      console.error("Error fetching  movies:", error);
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSearch = () => {
+    setPage(1);
     fetchMoviesBySearching();
   };
+
+  const handleNextPage = () => {
+    if (!loading) {
+      setPage((prevPage) => prevPage + 1);
+      fetchMoviesBySearching();
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (!loading && page > 1) {
+      setPage((prevPage) => prevPage - 1);
+      fetchMoviesBySearching();
+    }
+  };
+
+  const renderFooter = () => {
+    return (
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <TouchableOpacity onPress={handlePrevPage} disabled={page === 1}>
+          <Text style={{ color: page === 1 ? COLORS.gray : COLORS.primary }}>
+            Previous
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleNextPage}
+          disabled={movies.length % itemsPerPage !== 0}>
+          <Text
+            style={{
+              color:
+                movies.length % itemsPerPage !== 0
+                  ? COLORS.gray
+                  : COLORS.primary,
+            }}>
+            Next
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
 
   return (
     <View style={{ margin: 20 }}>
       <TextInput
-        style={{
-          height: 50,
-          backgroundColor: COLORS.white,
-          borderWidth: 2,
-          borderColor: COLORS.lightWhite,
-          padding: 10,
-          marginBottom: 20,
-        }}
+        style={styles.textInput}
         value={searchKey}
         placeholder="Search Movie or TV Show name"
         onChangeText={(text) => setSearchKey(text)}
@@ -70,26 +125,25 @@ const SearchResults = ({ navigation }) => {
           family={"medium"}
           size={SIZES.large}
           color={COLORS.lightRed}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            paddingTop: 100,
-          }}
+          style={styles.moviesReusableText}
         />
       ) : (
         <FlatList
-          data={movies.filter((movie) => movie.media_type !== "person")}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-          showsHorizontalScrollIndicator={false}
+          key={`${movieType.value}-${searchKey}`}
+          data={movies.slice(startIndex, endIndex)}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{
+            columnGap: SIZES.medium,
+            paddingBottom: 250,
+          }}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View
               style={{ marginBottom: 10, backgroundColor: COLORS.lightWhite }}>
               <ReusableTile
                 item={item}
                 onPress={() =>
-                  navigation.navigate("HotelDetails", {
+                  navigation.navigate("Details", {
                     id: item.id,
                     mediaType: item.media_type ? item.media_type : "movie",
                   })
@@ -97,6 +151,8 @@ const SearchResults = ({ navigation }) => {
               />
             </View>
           )}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={renderFooter}
         />
       )}
     </View>

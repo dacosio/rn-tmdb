@@ -46,6 +46,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  textInput: {
+    height: 50,
+    backgroundColor: COLORS.white,
+    borderWidth: 2,
+    borderColor: COLORS.lightWhite,
+    padding: 10,
+    marginBottom: 20,
+  },
+  moviesReusableText: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    paddingTop: 100,
+  },
 });
 
 export default styles;

@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HotelDetails from "./screens/details/HotelDetails";
+import Details from "./screens/details/Details";
 import TopTab from "./navigation/TopTab";
 
 const Stack = createNativeStackNavigator();
@@ -32,8 +32,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="HotelDetails"
-          component={HotelDetails}
+          name="Details"
+          component={Details}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
